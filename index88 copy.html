@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+        <link rel="stylesheet" href="style.css">
+    </body>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        function MinutesToHoures() {
+            const [amount, setAmount] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {
+                setAmount(event.target.value);
+
+            };
+            const reset = () => setAmount(0);
+            const onFlip = () => {
+                reset();
+                setFlipped((current) => !current);
+            };
+            return (
+                <div>
+                    <div>
+                        <h1>Converter2</h1>
+                        <label>Min</label>
+                        <input 
+                            value={flipped? amount*60 : amount}
+                            id="Minutes"
+                            placeholer="Minutes"
+                            type="number"
+                            onChange={onChange}
+                            disabled={flipped}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="hours">Hours</label>
+                        <input 
+                            value={flipped? amount : Math.round(amount / 60)}
+                            placeholer="Hours"
+                            type="number"
+                            onChange={onChange}
+                            disabled={!flipped}
+                        />
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>{flipped? "Turn back" : "Invert"}</button>
+                </div>
+            )
+        };
+        function KmToMiles() {
+            return <h1>VRA</h1>;
+        }
+        function App() {
+            const [index, setIndex] = React.useState("0");
+            const onSelect = (event) => {
+                setIndex(event.target.value);
+            }
+            console.log('render w/', index)
+            return (
+                <div>
+                    <h1>Select Page</h1>
+                    <select value={index} onChange={onSelect}>
+                        <option value="0">1</option>
+                        <option value="1">2</option>
+                        <option value="2">3</option>
+                    </select>
+                    <hr />
+                        {index === "0" ? "Please select" : null}
+                        {index === "1" ? <MinutesToHoures /> : null}
+                        {index === "2" ? <KmToMiles /> : null}
+                </div>
+            );
+        }
+        const rootContainer = ReactDOM.createRoot(root);
+        rootContainer.render(<App />);
+    </script>
+</html>
